@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import HomeScreen from "./HomeScreen";
+import HomeScreen from "./screens/HomeScreen";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginScreen from "./screens/LoginScreen";
+import { auth } from "./Firebase";
 
 function App() {
+  const user = null;
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        //logged in
+        console.log(userAuth);
+      } else {
+        //logged out
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <div className="app">
-      <HomeScreen />
+      <Router>
+        {!user ? (
+          <LoginScreen />
+        ) : (
+          <Routes>
+            <Route exact path="/" element={<HomeScreen />}></Route>
+          </Routes>
+        )}
+      </Router>
     </div>
   );
 }
