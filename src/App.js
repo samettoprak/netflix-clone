@@ -20,15 +20,17 @@ function App() {
           login({
             uid: userAuth.uid,
             email: userAuth.email,
+            date: userAuth.metadata.creationTime,
           })
         );
       } else {
         //logged out
-        dispatch(logout);
+        dispatch(logout());
       }
     });
+
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="app">
